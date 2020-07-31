@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
 import style from './style';
-import SpeechSynthesis from './speechSynthesis';
-import Button from './button';
+import SpeechSynthesis from './SpeechSynthesis';
+import Button from './Button';
 
 export default class Speech extends Component {
   constructor(props) {
@@ -18,14 +18,7 @@ export default class Speech extends Component {
     this.onend = this.onend.bind(this);
     this.onerror = this.onerror.bind(this);
 
-    this.settings = {
-      voice: this.props.voice,
-      text: this.props.text,
-      lang: this.props.lang,
-      pitch: this.props.pitch,
-      rate: this.props.rate,
-      volume: this.props.volume,
-    };
+    this.settings = Object.assign({}, this.props);
   }
 
   componentDidMount() {
