@@ -24,12 +24,12 @@ const config = {
         use: 'file-loader',
       },
       {
-        test: /\.png$/,
+        test: /\.(png|jpg|gif)$/,
         use: [
           {
             loader: 'url-loader',
             options: {
-              mimetype: 'image/png',
+              limit: 640000,
             },
           },
         ],
@@ -47,8 +47,11 @@ const config = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      appMountId: 'app',
+      template: path.resolve(__dirname, 'src', 'index.html'),
       filename: 'index.html',
+      appMountId: 'app',
+      title: 'Reading Well',
+      mobile: true,
     }),
   ],
 };

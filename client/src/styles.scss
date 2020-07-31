@@ -1,6 +1,73 @@
+@import 'scss/_mixins';
+
 $primary-color: white;
 $bg: black;
-h1 {
-  color: $primary-color;
-  background-color: $bg;
+
+body {
+  margin: auto;
+  max-width: 1200px;
+}
+
+#app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  section {
+    width: 100%;
+
+    #white-board {
+      position: relative;
+
+      > div {
+        position: absolute;
+      }
+
+      img {
+        width: 100%;
+      }
+    }
+
+    #well {
+      background-image: url(assets/images/well.jpg);
+      background-position: center bottom;
+      background-repeat: no-repeat;
+      text-align: center;
+
+      img {
+        max-height: 500px;
+      }
+    }
+
+    .controls {
+      .rs-container {
+        display: flex;
+        justify-content: space-around;
+      }
+    }
+
+    .rs-container {
+      > span {
+        color: #00a152;
+      }
+    }
+  }
+}
+
+@include lg {
+  .content {
+    max-width: 1200px;
+    margin: auto;
+
+    section {
+      width: 50%;
+    }
+  }
 }
