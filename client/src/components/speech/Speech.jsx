@@ -52,7 +52,6 @@ export default class Speech extends Component {
   }
 
   play() {
-    debugger;
     if (
       this.props.checkWord !== undefined
         ? this.props.checkWord(this.props.text)
