@@ -89,9 +89,10 @@ const Game = () => {
   };
 
   const phrases = {
-    help: `I'm stuck in the well. Who can help me out by finding the word {0}`,
+    help: `I'm stuck in the well. Who can help me out by finding the word {0}?`,
+    found: `Great! You found {0}`,
     repeat: `Find {0}`,
-    complete: `Thanks for helping me get out of the well!`,
+    complete: `...Thanks for helping me get out of the well!`,
   };
 
   const [words, setWords] = useState([]);
@@ -160,40 +161,41 @@ const Game = () => {
   };
 
   const checkWord = (text) => {
+    let phrase = text;
+    let checkWordsLeft = true;
+    let checkWords = true;
+    let newWordsLeft = [];
     if (text === currentWord) {
-      if (!isRoundComplete()) {
-        for (let i = 0; i < words.length; i++) {
-          if (wordsLeft[i] !== undefined && text === wordsLeft[i]) {
-            const newWordsLeft = wordsLeft.slice();
-            newWordsLeft.splice(i, 1);
-            setWordsLeft(newWordsLeft);
-          }
-          if (text === words[i].word) {
-            setWords([
-              ...words.slice(0, i),
-              {
-                ...words[i],
-                disabled: true,
-              },
-              ...words.slice(i + 1),
-            ]);
-
-            return true;
-          }
+      for (let i = 0; i < words.length; i++) {
+        if (
+          checkWordsLeft &&
+          wordsLeft[i] !== undefined &&
+          text === wordsLeft[i]
+        ) {
+          newWordsLeft = wordsLeft.slice();
+          newWordsLeft.splice(i, 1);
+          setWordsLeft(newWordsLeft);
+          checkWordsLeft = false;
         }
+        if (checkWords && text === words[i].word) {
+          setWords([
+            ...words.slice(0, i),
+            {
+              ...words[i],
+              disabled: true,
+            },
+            ...words.slice(i + 1),
+          ]);
+          checkWords = false;
+        }
+      }
+      phrase = format(phrases.found, text);
+      if (wordsLeft.length < 2) {
+        phrase += format(phrases.complete);
       }
     }
 
-    return false;
-  };
-
-  const isRoundComplete = () => {
-    if (wordsLeft.length < 2) {
-      setPhrase(phrases.complete);
-      return true;
-    }
-
-    return false;
+    return phrase;
   };
 
   const renderWords = () => {

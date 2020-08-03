@@ -17,8 +17,7 @@ export default class Speech extends Component {
     this.stop = this.stop.bind(this);
     this.onend = this.onend.bind(this);
     this.onerror = this.onerror.bind(this);
-
-    this.settings = Object.assign({}, this.props);
+    this.handlePlay = this.handlePlay.bind(this);
   }
 
   componentDidMount() {
@@ -39,19 +38,24 @@ export default class Speech extends Component {
   }
 
   setSpeechSynthesis() {
-    this.speechSynthesis = new SpeechSynthesis(this.settings);
+    this.speechSynthesis = new SpeechSynthesis(this.props);
     this.speechSynthesis.onend(this.onend);
     this.speechSynthesis.onerror(this.onerror);
   }
 
-  play() {
-    if (
-      this.props.checkWord !== undefined
-        ? this.props.checkWord(this.props.text)
-        : false
-    ) {
-      this.settings.text = `Great! You found ${this.props.text}`;
+  setPropsText(text) {
+    this.props = update(this.props, { text: { $set: text } });
+  }
+
+  handlePlay() {
+    if (this.props.checkWord !== undefined) {
+      const newText = this.props.checkWord(this.props.text);
+      this.setPropsText(newText);
     }
+    this.play();
+  }
+
+  play() {
     this.setSpeechSynthesis();
     this.speechSynthesis.speak();
     this.setButtonState('none', 'all', 'all', 'none');
@@ -101,7 +105,7 @@ export default class Speech extends Component {
         <Button
           className="rs-play"
           styles={this.state.styles.play}
-          onClick={this.play}
+          onClick={this.handlePlay}
         >
           <span className="rs-text" style={this.state.styles.text}>
             {this.props.displayText || this.props.text}
@@ -113,7 +117,7 @@ export default class Speech extends Component {
         <Button
           className="rs-play"
           styles={this.state.styles.play}
-          onClick={this.play}
+          onClick={this.handlePlay}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -15,6 +15,11 @@ body {
   justify-content: space-between;
 }
 
+header {
+  background-color: teal;
+  padding-left: 20px;
+}
+
 .content {
   display: flex;
   justify-content: center;
@@ -59,6 +64,11 @@ body {
       }
     }
   }
+}
+
+footer {
+  background-color: teal;
+  padding: 10px;
 }
 
 @include lg {
